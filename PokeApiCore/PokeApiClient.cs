@@ -21,22 +21,25 @@ namespace PokeApiCore
         /// </summary>
         /// <exception cref="HttpRequestException"></exception>
         /// <param name="name"></param>
+        /// <exception cref="ArgumentException">Thrown when Pokemon is not found</exception>
         /// <returns></returns>
         public async Task<Pokemon> GetPokemonByName(string name)
         {
-            try
+            name = name.ToLower(); // Pokemon API requires lowercase name
+            string url = $"https://pokeapi.co/api/v2/pokemon/{name}";
+            HttpResponseMessage response = await client.GetAsync(url);
+            if (response.IsSuccessStatusCode)
             {
-                string url = $"https://pokeapi.co/api/v2/pokemon/{name}";
-                HttpResponseMessage response = await client.GetAsync(url);
-                response.EnsureSuccessStatusCode();
                 string responseBody = await response.Content.ReadAsStringAsync();
-                return JsonConvert.DeserializeObject<Pokemon>(responseBody); ;
+                return JsonConvert.DeserializeObject<Pokemon>(responseBody);
             }
-            catch (HttpRequestException ex)
+            else if (response.StatusCode == HttpStatusCode.NotFound)
             {
-                Console.WriteLine(ex.Message);
-                Console.WriteLine(ex.StackTrace);
-                throw ex;
+                throw new ArgumentException($"{name} Does Not Exist");
+            }
+            else
+            {
+                throw new HttpRequestException();
             }
         }
 
