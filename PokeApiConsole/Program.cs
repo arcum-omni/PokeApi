@@ -1,5 +1,7 @@
 ﻿using PokeApiCore;
 using System;
+using System.Net.Http;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace PokeApiConsole
@@ -9,8 +11,24 @@ namespace PokeApiConsole
         static async Task Main(string[] args)
         {
             PokeApiClient client = new PokeApiClient();
-            string result = await client.GetPokemonByName("bulbasaur");
-            Console.WriteLine(result);
+            try
+            {
+                Pokemon result = await client.GetPokemonByName("Bulbasaur");
+
+                Console.WriteLine($"Pokemon ID: {result.id} " +
+                                  $"\n  Name: {result.name} " +
+                                  $"\n  Weight: {result.weight}lbs" +
+                                  $"\n  Height: {result.height}in");
+            }
+            catch (ArgumentException)
+            {
+                Console.WriteLine("That Pokemon does not exist");
+            }
+            catch (HttpRequestException)
+            {
+                Console.WriteLine("Please try again later.");
+            }
+            
 
             Console.ReadKey();
         }
