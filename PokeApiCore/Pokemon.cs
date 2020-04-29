@@ -16,7 +16,7 @@ namespace PokeApiCore
         /// <summary>
         /// Represents a single Pokemon
         /// </summary>
-        public int id { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
 
         /// <summary>
@@ -48,14 +48,14 @@ namespace PokeApiCore
             get => (int)Math.Ceiling(weight1 * PoundsPerHectogram);
             set => weight1 = value; 
         }
-        public Ability[] abilities { get; set; }
+        public Ability[] Abilities { get; set; }
         public Form[] forms { get; set; }
         public Game_Indices[] game_indices { get; set; }
         public Held_Items[] held_items { get; set; }
         public string location_area_encounters { get; set; }
         public Move[] moves { get; set; }
         public Species species { get; set; }
-        public Sprites sprites { get; set; }
+        public Sprites Sprites { get; set; }
         public Stat[] stats { get; set; }
         public Type[] types { get; set; }
     }

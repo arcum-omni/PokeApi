@@ -36,13 +36,17 @@ namespace PokeApiWebsite.Controllers
             // TODO: Refactor property names
             var entry = new PokedexEntryViewModel()
             {
-                Id = result.id,
+                Id = result.Id,
                 Name = result.Name,
                 Height = result.Height.ToString(),
                 Weight = result.Weight.ToString(),
-                PokeDexImageUrl = result.sprites.FrontDefault,
+                PokeDexImageUrl = result.Sprites.FrontDefault,
                 MoveList = resultMoves
             };
+
+            // Display Pokemon name in title case, ie Bulbasaur
+            // First char to upper name => Name
+            entry.Name = entry.Name.First().ToString().ToUpper() + entry.Name.Substring(1);
 
             return View(entry);
         }
