@@ -13,7 +13,8 @@ namespace PokeApiConsole
             PokeApiClient client = new PokeApiClient();
             try
             {
-                Pokemon result = await client.GetPokemonByName("Bulbasaur");
+                //Pokemon result = await client.GetPokemonByName("Bulbasaur");
+                Pokemon result = await client.GetPokemonById(1000);
 
                 Console.WriteLine($"Pokemon ID: {result.id} " +
                                   $"\n  Name: {result.name} " +
