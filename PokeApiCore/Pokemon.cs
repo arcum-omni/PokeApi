@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -15,8 +16,8 @@ namespace PokeApiCore
         /// <summary>
         /// Represents a single Pokemon
         /// </summary>
-        public int id { get; set; }
-        public string name { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// The base experience gained for defeating this Pokémon.
@@ -26,7 +27,7 @@ namespace PokeApiCore
         /// <summary>
         /// The height of this Pokémon in decimetres.
         /// </summary>
-        public int height
+        public int Height
         {
             get => (int)Math.Ceiling(height1 * InchesPerDecimeter); //height1 is an int, converting to inches produces double, math.ceiling returns double, then cast to (int)
             set => height1 = value;
@@ -42,19 +43,19 @@ namespace PokeApiCore
         /// The weight of this Pokémon in hectograms.
         /// 1 hg = 100 g = 0.220462 lbs
         /// </summary>
-        public int weight
+        public int Weight
         { 
             get => (int)Math.Ceiling(weight1 * PoundsPerHectogram);
             set => weight1 = value; 
         }
-        public Ability[] abilities { get; set; }
+        public Ability[] Abilities { get; set; }
         public Form[] forms { get; set; }
         public Game_Indices[] game_indices { get; set; }
         public Held_Items[] held_items { get; set; }
         public string location_area_encounters { get; set; }
         public Move[] moves { get; set; }
         public Species species { get; set; }
-        public Sprites sprites { get; set; }
+        public Sprites Sprites { get; set; }
         public Stat[] stats { get; set; }
         public Type[] types { get; set; }
     }
@@ -73,7 +74,9 @@ namespace PokeApiCore
         public string front_female { get; set; }
         public string front_shiny_female { get; set; }
         public string back_shiny { get; set; }
-        public string front_default { get; set; }
+
+        [JsonProperty("front_default")]
+        public string FrontDefault { get; set; }
         public string front_shiny { get; set; }
     }
 
