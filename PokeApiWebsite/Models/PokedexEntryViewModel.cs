@@ -8,7 +8,7 @@ namespace PokeApiWebsite.Models
     /// <summary>
     /// Information for a single Pokemon PokeDex Entry
     /// </summary>
-    public class PokemonPokeDexEntryViewModel
+    public class PokedexEntryViewModel
     {
         public string Name { get; set; }
 
