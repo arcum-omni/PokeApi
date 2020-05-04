@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -14,7 +15,15 @@ namespace PokeApiCore
     {
         // Manage NuGet Packages, system.net.http (185M downloads)
         // Joe did in lecture, but I already had the using, and my project built
-        static readonly HttpClient client = new HttpClient();
+        static readonly HttpClient client;
+
+        static PokeApiClient()
+        {
+            client = new HttpClient();
+            client.BaseAddress = new Uri("https://pokeapi.co/api/v2/"); // End with forward slash!
+
+            client.DefaultRequestHeaders.Add("User-Agent", "Travis' PokeAPI");
+        }
 
         /// <summary>
         /// Retrieve Pokemon by name
@@ -41,7 +50,7 @@ namespace PokeApiCore
 
         private static async Task<Pokemon> GetPokemonByNameOrID(string name)
         {
-            string url = $"https://pokeapi.co/api/v2/pokemon/{name}";
+            string url = $"pokemon/{name}";
             HttpResponseMessage response = await client.GetAsync(url);
             if (response.IsSuccessStatusCode)
             {

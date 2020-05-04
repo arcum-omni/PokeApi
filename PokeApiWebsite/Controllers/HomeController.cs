@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.Logging;
 using PokeApiCore;
 using PokeApiWebsite.Models;
@@ -19,34 +20,15 @@ namespace PokeApiWebsite.Controllers
             _logger = logger;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? id)
         {
-            PokeApiClient myClient = new PokeApiClient();
-            Pokemon result = await myClient.GetPokemonById(1);
+            int desiredID = id ?? 1; // ?? null coalescing operator
+            ViewData["Id"] = desiredID;
 
-            // TODO: Add move list
-            List<string> resultMoves = new List<string>();
-            foreach (Move currMove in result.moves)
-            {
-                resultMoves.Add(currMove.move.name);
-            }
-
-            resultMoves.Sort();
+            Pokemon p = await PokeApiHelper.GetByID(desiredID);
 
             // TODO: Refactor property names
-            var entry = new PokedexEntryViewModel()
-            {
-                Id = result.Id,
-                Name = result.Name,
-                Height = result.Height.ToString(),
-                Weight = result.Weight.ToString(),
-                PokeDexImageUrl = result.Sprites.FrontDefault,
-                MoveList = resultMoves
-            };
-
-            // Display Pokemon name in title case, ie Bulbasaur
-            // First char to upper name => Name
-            entry.Name = entry.Name.First().ToString().ToUpper() + entry.Name.Substring(1);
+            PokedexEntryViewModel entry = PokeApiHelper.GetPokedexEntryFromPokemon(p);
 
             return View(entry);
         }
